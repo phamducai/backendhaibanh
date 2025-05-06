@@ -1,0 +1,253 @@
+{
+  "info": {
+    "_postman_id": "a7e6a3fe-ddf0-4b21-815d-f2d7e7a2b8b1",
+    "name": "Hải Bánh Products API",
+    "description": "Collection for testing Products module APIs including file upload",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Product (with Image)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "productname",
+              "value": "Khóa học test",
+              "type": "text"
+            },
+            {
+              "key": "iscourse",
+              "value": "true",
+              "description": "Phải gửi giá trị boolean dưới dạng string",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "Mô tả chi tiết về khóa học",
+              "type": "text"
+            },
+            {
+              "key": "regularprice",
+              "value": "499000",
+              "type": "text"
+            },
+            {
+              "key": "saleprice",
+              "value": "399000",
+              "type": "text"
+            },
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/path/to/your/image.jpg",
+              "description": "Select an image file to upload"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "products"
+          ]
+        },
+        "description": "Create a new product with image upload"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "products"
+          ]
+        },
+        "description": "Get all products"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Product by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/products/{{product_id}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "products"
+          ],
+          "variable": [
+            {
+              "key": "product_id",
+              "value": "{{product_id}}"
+            }
+          ]
+        },
+        "description": "Get a specific product by ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Product",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"productname\": \"Khóa học đã cập nhật\",\n    \"description\": \"Mô tả mới của khóa học\",\n    \"regularprice\": 599000,\n    \"saleprice\": 499000\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/products/{{product_id}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "products",
+            "{{product_id}}"
+          ]
+        },
+        "description": "Update a product"
+      },
+      "response": []
+    },
+    {
+      "name": "Upload Image to Existing Product",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/path/to/your/image.jpg",
+              "description": "Select an image file to upload"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/products/{{product_id}}/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "products",
+            "{{product_id}}",
+            "upload"
+          ]
+        },
+        "description": "Upload an image to an existing product"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Image",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/products/images/{{filename}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "products",
+            "images",
+            "{{filename}}"
+          ]
+        },
+        "description": "Get an image by filename"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Product",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/products/{{product_id}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "products",
+            "{{product_id}}"
+          ]
+        },
+        "description": "Delete a product"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "product_id",
+      "value": "",
+      "type": "string",
+      "description": "ID của sản phẩm đã được tạo"
+    },
+    {
+      "key": "filename",
+      "value": "",
+      "type": "string",
+      "description": "Tên file hình ảnh được lưu trên server"
+    }
+  ]
+}

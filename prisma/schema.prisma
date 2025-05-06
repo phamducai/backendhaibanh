@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  userid        String         @id @db.Uuid
+  email         String         @unique @db.VarChar(100)
+  password      String?        @db.VarChar(255)
+  fullname      String?        @db.VarChar(100)
+  phone         String?        @db.VarChar(20)
+  createdat     DateTime?      @default(now()) @db.Timestamp(6)
+  updatedat     DateTime?      @default(now()) @db.Timestamp(6)
+  isdeleted     Boolean?       @default(false)
+  googleid      String?        @unique @db.VarChar(255)
+  avatar        String?        @db.VarChar(255)
+  isgooglelogin Boolean?       @default(false)
+  role          user_role      @default(user)
+  userproducts  userproducts[]
+
+  @@index([email], map: "idx_user_email")
+  @@index([googleid], map: "idx_user_google_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model chapters {
+  chapterid    String    @id @db.Uuid
+  productid    String    @db.Uuid
+  chaptername  String    @db.VarChar(255)
+  displayorder Int
+  createdat    DateTime? @default(now()) @db.Timestamp(6)
+  updatedat    DateTime? @default(now()) @db.Timestamp(6)
+  isdeleted    Boolean?  @default(false)
+  products     products  @relation(fields: [productid], references: [productid], onDelete: Cascade, onUpdate: NoAction)
+  lessons      lessons[]
+
+  @@index([productid], map: "idx_chapter_product")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model lessons {
+  lessonid     String    @id @db.Uuid
+  chapterid    String    @db.Uuid
+  lessonname   String    @db.VarChar(255)
+  videourl     String?   @db.VarChar(255)
+  duration     String?   @db.VarChar(50)
+  displayorder Int
+  description  String?
+  createdat    DateTime? @default(now()) @db.Timestamp(6)
+  updatedat    DateTime? @default(now()) @db.Timestamp(6)
+  isdeleted    Boolean?  @default(false)
+  productid    String?   @db.Uuid
+  chapters     chapters  @relation(fields: [chapterid], references: [chapterid], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([chapterid], map: "idx_lesson_chapter")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model products {
+  productid    String         @id @db.Uuid
+  productname  String         @db.VarChar(255)
+  iscourse     Boolean
+  description  String?
+  regularprice Decimal        @db.Decimal(10, 2)
+  saleprice    Decimal?       @db.Decimal(10, 2)
+  imageurl     String?        @db.VarChar(255)
+  downloadurl  String?
+  createdat    DateTime?      @default(now()) @db.Timestamp(6)
+  updatedat    DateTime?      @default(now()) @db.Timestamp(6)
+  isactive     Boolean?       @default(true)
+  isdeleted    Boolean?       @default(false)
+  chapters     chapters[]
+  userproducts userproducts[]
+
+  @@index([iscourse], map: "idx_product_is_course")
+  @@index([isdeleted], map: "idx_product_is_deleted")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model userproducts {
+  userproductid String    @id @db.Uuid
+  userid        String    @db.Uuid
+  productid     String    @db.Uuid
+  purchasedate  DateTime? @default(now()) @db.Timestamp(6)
+  isdeleted     Boolean?  @default(false)
+  products      products  @relation(fields: [productid], references: [productid], onDelete: Cascade, onUpdate: NoAction)
+  users         users     @relation(fields: [userid], references: [userid], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([userid, productid], map: "unique_user_product")
+  @@index([userid, productid], map: "idx_user_products")
+}
+
+enum user_role {
+  admin
+  user
+}
