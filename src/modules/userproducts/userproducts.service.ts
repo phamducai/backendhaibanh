@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserproductDto } from './dto/create-userproduct.dto';
+import { CreateUserProductDto } from './dto/create-userproduct.dto';
 import { UpdateUserproductDto } from './dto/update-userproduct.dto';
+import { v4 as uuidv4 } from 'uuid';
+import { PrismaService } from '../../database/prisma.service'
+
 
 @Injectable()
 export class UserproductsService {
-  create(createUserproductDto: CreateUserproductDto) {
-    return 'This action adds a new userproduct';
+  constructor(private readonly prisma: PrismaService) {}
+
+  create(createUserProductDto: CreateUserProductDto) {
+    return this.prisma.userproducts.create({
+      data: {
+        ...createUserProductDto,
+        userproductid: uuidv4(),
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all userproducts`;
+    return this.prisma.userproducts.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} userproduct`;
+  findOne(id: string) {
+    return this.prisma.userproducts.findUnique({
+      where: { userproductid: id },
+    });
   }
 
-  update(id: number, updateUserproductDto: UpdateUserproductDto) {
-    return `This action updates a #${id} userproduct`;
+  update(id: string, updateUserProductDto: UpdateUserproductDto) {
+    return this.prisma.userproducts.update({
+      where: { userproductid: id },
+      data: updateUserProductDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userproduct`;
+  remove(id: string) {
+    return this.prisma.userproducts.delete({
+      where: { userproductid: id },
+    });
   }
 }

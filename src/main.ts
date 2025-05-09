@@ -17,13 +17,13 @@ async function bootstrap() {
   });
   
   // Cookie parser middleware
-  app.use(cookieParser());
+  // app.use(cookieParser());
   
   // Global filters for centralized error handling
-  app.useGlobalFilters(
-    new HttpExceptionFilter(),
-    new PrismaExceptionFilter()
-  );
+  // app.useGlobalFilters(
+  //   new HttpExceptionFilter(),
+  //   new PrismaExceptionFilter()
+  // );
   
   // Global validation pipe
   app.useGlobalPipes(
