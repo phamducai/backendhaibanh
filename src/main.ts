@@ -8,11 +8,11 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT', 3001);
+  const port = configService.get<number>('PORT', 3000)
   
   app.setGlobalPrefix('api/v1');
   app.enableCors({
-    origin: configService.get('CORS_ORIGIN', 'http://localhost:3000'),
+    origin: ['http://localhost:3000', 'http://localhost:8080'],
     credentials: true, // Cho phép chia sẻ cookie giữa các domain
   });
   

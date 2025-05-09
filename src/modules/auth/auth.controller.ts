@@ -4,8 +4,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { LoginUserDto } from '../users/dto/login-user.dto';
-import { RegisterUserDto } from '../users/dto/register-user.dto';
+import { AuthenticationDto } from '../users/dto/authentication.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,7 +19,7 @@ export class AuthController {
     const user = await this.usersService.findOrCreateByGoogle(userData);
     
     // Tạo JWT token
-    const tokens = this.authService.generateToken(user.id);
+    const tokens = this.authService.generateToken(user.userid);
     
     // Lưu refresh token vào HTTP cookie (access token sẽ được trả về trong response)
     this.authService.setRefreshTokenCookie(response, tokens.refreshToken);
@@ -29,21 +28,19 @@ export class AuthController {
     return {
       accessToken: tokens.accessToken,
       user: {
-        id: user.id,
+        id: user.userid,
         email: user.email,
-        fullName: user.full_name,
-        avatarUrl: user.avatar_url,
+        avatarUrl: user.avatar,
       }
     };
   }
 
   @Post('register')
-  async register(@Body() registerDto: RegisterUserDto, @Res({ passthrough: true }) response: Response) {
-    // Đăng ký người dùng mới
+  async register(@Body() registerDto: AuthenticationDto, @Res({ passthrough: true }) response: Response) {
     const user = await this.usersService.register(registerDto);
     
     // Tạo JWT token
-    const tokens = this.authService.generateToken(user.id);
+    const tokens = this.authService.generateToken(user.userid);
     
     // Lưu refresh token vào HTTP cookie (access token sẽ được trả về trong response)
     this.authService.setRefreshTokenCookie(response, tokens.refreshToken);
@@ -52,21 +49,21 @@ export class AuthController {
     return {
       accessToken: tokens.accessToken,
       user: {
-        id: user.id,
+        id: user.userid,
         email: user.email,
-        fullName: user.full_name,
-        avatarUrl: user.avatar_url,
+        avatarUrl: user.avatar,
       }
     };
   }
 
   @Post('login')
-  async login(@Body() loginDto: LoginUserDto, @Res({ passthrough: true }) response: Response) {
+  async login(@Body() loginDto: AuthenticationDto, @Res({ passthrough: true }) response: Response) {
+    
     // Xác thực user bằng email và password
     const user = await this.usersService.validateUser(loginDto);
     
     // Tạo JWT token
-    const tokens = this.authService.generateToken(user.id);
+    const tokens = this.authService.generateToken(user.userid);
     
     // Lưu refresh token vào HTTP cookie (access token sẽ được trả về trong response)
     this.authService.setRefreshTokenCookie(response, tokens.refreshToken);
@@ -75,10 +72,9 @@ export class AuthController {
     return {
       accessToken: tokens.accessToken,
       user: {
-        id: user.id,
+        id: user.userid,
         email: user.email,
-        fullName: user.full_name,
-        avatarUrl: user.avatar_url,
+        avatarUrl: user.avatar,
       }
     };
   }
@@ -104,7 +100,7 @@ export class AuthController {
     }
     
     // Generate new tokens
-    const tokens = this.authService.generateToken(user.id);
+    const tokens = this.authService.generateToken(user.userid);
     
     // Set refresh token cookie, return access token in response
     this.authService.setRefreshTokenCookie(response, tokens.refreshToken);
@@ -112,10 +108,9 @@ export class AuthController {
     return {
       accessToken: tokens.accessToken,
       user: {
-        id: user.id,
+        id: user.userid,
         email: user.email,
-        fullName: user.full_name,
-        avatarUrl: user.avatar_url,
+        avatarUrl: user.avatar,
       }
     };
   }
@@ -131,10 +126,9 @@ export class AuthController {
     return {
       authenticated: true,
       user: {
-        id: user.id,
+        id: user.userid,
         email: user.email,
-        fullName: user.full_name,
-        avatarUrl: user.avatar_url,
+        avatarUrl: user.avatar,
       }
     };
   }

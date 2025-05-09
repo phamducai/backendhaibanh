@@ -13,14 +13,11 @@ export class JwtAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     
     // Lấy token từ Authorization header
-    const authHeader = request.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = request.headers.authorization;
+    if (!token) {
       throw new UnauthorizedException('Access token not found');
     }
     
-    // Lấy token từ chuỗi "Bearer <token>"
-    const token = authHeader.split(' ')[1];
-
     try {
       const payload = this.jwtService.verify(token, {
         secret: this.configService.get('JWT_SECRET')

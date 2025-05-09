@@ -1,9 +1,9 @@
 import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import * as argon2 from 'argon2';
+import { AuthenticationDto } from './dto/authentication.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +15,7 @@ export class UsersService {
 
   async findOne(id: string) {
     return this.prisma.users.findUnique({
-      where: { id },
+      where: { userid: id },
     });
   }
 
@@ -27,7 +27,7 @@ export class UsersService {
 
   async findByGoogleId(googleId: string) {
     return this.prisma.users.findUnique({
-      where: { google_id: googleId },
+      where: { googleid: googleId },
     });
   }
 
@@ -48,13 +48,10 @@ export class UsersService {
     // If found, update last login and Google ID if needed
     if (user) {
       return this.prisma.users.update({
-        where: { id: user.id },
-        data: { 
-          last_login: new Date(),
-          // Update Google ID if it wasn't set and is provided now
-          ...(userData.googleId && !user.google_id ? { google_id: userData.googleId } : {}),
-          // Update avatar if provided
-          ...(userData.avatarUrl ? { avatar_url: userData.avatarUrl } : {})
+        where: { userid: user.userid },
+        data: {
+          googleid: userData.googleId,
+          avatar: userData.avatarUrl,
         }
       });
     }
@@ -62,17 +59,16 @@ export class UsersService {
     // If user doesn't exist, create new one
     return this.prisma.users.create({
       data: {
-        full_name: userData.fullName,
         email: userData.email,
-        google_id: userData.googleId,
-        avatar_url: userData.avatarUrl,
-        last_login: new Date(),
+        googleid: userData.googleId,
+        avatar: userData.avatarUrl,
+        isgooglelogin:true,
+        userid: uuidv4(),
       }
     });
   }
 
-  async register(registerDto: RegisterUserDto) {
-    // Kiểm tra email đã tồn tại chưa
+  async register(registerDto: AuthenticationDto) {
     const existingUser = await this.findByEmail(registerDto.email);
     if (existingUser) {
       throw new ConflictException('Email already exists');
@@ -84,32 +80,30 @@ export class UsersService {
     // Tạo người dùng mới
     return this.prisma.users.create({
       data: {
-        full_name: registerDto.fullName,
+        userid: uuidv4(),
         email: registerDto.email,
-        pass_word: hashedPassword, 
-        avatar_url: registerDto.avatarUrl,
-        last_login: new Date(),
+        password: hashedPassword, 
       }
     });
   }
 
-  async validateUser(loginDto: LoginUserDto) {
+  async validateUser(loginDto: AuthenticationDto) {
     // Tìm user theo email
     const user = await this.findByEmail(loginDto.email);
-    if (!user || !user.pass_word) {
+    if (!user || !user.password) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
     // Kiểm tra mật khẩu
-    const isPasswordValid = await argon2.verify(user.pass_word, loginDto.password);
+    const isPasswordValid = await argon2.verify(user.password, loginDto.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
     // Cập nhật thời gian đăng nhập
     await this.prisma.users.update({
-      where: { id: user.id },
-      data: { last_login: new Date() }
+      where: { userid: user.userid },
+      data: { updatedat: new Date() }
     });
 
     return user;
