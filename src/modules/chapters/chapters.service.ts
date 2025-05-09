@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
-
+import { v4 as uuidv4 } from 'uuid';
+import { PrismaService } from '../../database/prisma.service';
 @Injectable()
 export class ChaptersService {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createChapterDto: CreateChapterDto) {
-    return 'This action adds a new chapter';
+    return this.prisma.chapters.create({
+      data: {
+        ...createChapterDto,
+        chapterid: uuidv4(),
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all chapters`;
+    return this.prisma.chapters.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} chapter`;
+  findOne(id: string) {
+    return this.prisma.chapters.findUnique({
+      where: { chapterid: id },
+    });
   }
 
-  update(id: number, updateChapterDto: UpdateChapterDto) {
-    return `This action updates a #${id} chapter`;
+  update(id: string, updateChapterDto: UpdateChapterDto) {
+    return this.prisma.chapters.update({
+      where: { chapterid: id },
+      data: updateChapterDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} chapter`;
+  remove(id: string) {
+    return this.prisma.chapters.delete({
+      where: { chapterid: id },
+    });
   }
 }

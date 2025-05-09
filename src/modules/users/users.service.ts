@@ -1,9 +1,10 @@
 import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../../database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as argon2 from 'argon2';
 import { AuthenticationDto } from './dto/authentication.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { PrismaService } from '../../database/prisma.service';
+
 
 @Injectable()
 export class UsersService {
