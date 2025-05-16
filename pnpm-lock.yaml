@@ -50,9 +50,15 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      get-video-duration:
+        specifier: ^4.1.0
+        version: 4.1.0
       multer:
         specifier: 1.4.5-lts.2
         version: 1.4.5-lts.2
+      nestjs-vnpay:
+        specifier: ^1.0.1
+        version: 1.0.1(@nestjs/common@11.1.0(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(vnpay@2.2.0)
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -74,6 +80,9 @@ importers:
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
+      vnpay:
+        specifier: ^2.2.0
+        version: 2.2.0
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.2.0
@@ -550,6 +559,49 @@ packages:
   '@eslint/plugin-kit@0.2.8':
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@ffprobe-installer/darwin-arm64@5.0.1':
+    resolution: {integrity: sha512-vwNCNjokH8hfkbl6m95zICHwkSzhEvDC3GVBcUp5HX8+4wsX10SP3B+bGur7XUzTIZ4cQpgJmEIAx6TUwRepMg==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@ffprobe-installer/darwin-x64@5.0.0':
+    resolution: {integrity: sha512-Zl0UkZ+wW/eyMKBPLTUCcNQch2VDnZz/cBn1DXv3YtCBVbYd9aYzGj4MImdxgWcoE0+GpbfbO6mKGwMq5HCm6A==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@ffprobe-installer/ffprobe@1.4.1':
+    resolution: {integrity: sha512-3WJvxU0f4d7IOZdzoVCAj9fYtiQNC6E0521FJFe9iP5Ej8auTXU7TsrUzIAG1CydeQI+BnM3vGog92SCcF9KtA==}
+
+  '@ffprobe-installer/linux-arm64@5.0.0':
+    resolution: {integrity: sha512-IwFbzhe1UydR849YXLPP0RMpHgHXSuPO1kznaCHcU5FscFBV5gOZLkdD8e/xrcC8g/nhKqy0xMjn5kv6KkFQlQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@ffprobe-installer/linux-arm@5.0.0':
+    resolution: {integrity: sha512-mM1PPxP2UX5SUvhy0urcj5U8UolwbYgmnXA/eBWbW78k6N2Wk1COvcHYzOPs6c5yXXL6oshS2rZHU1kowigw7g==}
+    cpu: [arm]
+    os: [linux]
+
+  '@ffprobe-installer/linux-ia32@5.0.0':
+    resolution: {integrity: sha512-c3bWlWEDMST59SAZycVh0oyc2eNS/CxxeRjoNryGRgqcZX3EJWJJQL1rAXbpQOMLMi8to1RqnmMuwPJgLLjjUA==}
+    cpu: [ia32]
+    os: [linux]
+
+  '@ffprobe-installer/linux-x64@5.0.0':
+    resolution: {integrity: sha512-zgLnWJFvMGCaw1txGtz84sMEQt6mQUzdw86ih9S/kZOWnp06Gj/ams/EXxEkAxgAACCVM6/O0mkDe/6biY5tgA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@ffprobe-installer/win32-ia32@5.0.0':
+    resolution: {integrity: sha512-NnDdAZD6ShFXzJeCkAFl2ZjAv7GcJWYudLA+0T/vjZwvskBop+sq1PGfdmVltfFDcdQiomoThRhn9Xiy9ZC71g==}
+    cpu: [ia32]
+    os: [win32]
+
+  '@ffprobe-installer/win32-x64@5.0.0':
+    resolution: {integrity: sha512-P4ZMRFxVMnfMsOyTfBM/+nkTodLeOUfXNPo+X1bKEWBiZxRErqX/IHS5sLA0yAH8XmtKZcL7Cu6M26ztGcQYxw==}
+    cpu: [x64]
+    os: [win32]
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1875,6 +1927,9 @@ packages:
   date-fns@4.1.0:
     resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+
   debug@4.4.0:
     resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
     engines: {node: '>=6.0'}
@@ -2316,6 +2371,9 @@ packages:
   get-stream@9.0.1:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
+
+  get-video-duration@4.1.0:
+    resolution: {integrity: sha512-kDmnD/C/WFHmZx7eV2duUNCwAH6w9YwpigiUHmq7cRNmxuTvcJ/otvcxa4A5GDus2iSZ+CZEA5e0va/r5ZWumw==}
 
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -2934,6 +2992,12 @@ packages:
 
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
+
+  nestjs-vnpay@1.0.1:
+    resolution: {integrity: sha512-venS1m8pKJon8Czy3Jmq+emSOW5o2XefRVSbNzeTh7GVT0hxaGNttfCPFx37xlTC5nTffHlMxDM8fPtma8yQwQ==}
+    peerDependencies:
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      vnpay: ^1.0.0 || ^2.1.1
 
   node-abort-controller@3.1.1:
     resolution: {integrity: sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==}
@@ -3708,6 +3772,9 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
+  vnpay@2.2.0:
+    resolution: {integrity: sha512-3cqjAD7dHBRNjOeIbfZibL4JzwQRzjDERMy33T1pRJdJHtfB0fZskWPg63IoXnpEo+wduwTyaqyMH10wN4uAhQ==}
+
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
 
@@ -4180,6 +4247,41 @@ snapshots:
     dependencies:
       '@eslint/core': 0.13.0
       levn: 0.4.1
+
+  '@ffprobe-installer/darwin-arm64@5.0.1':
+    optional: true
+
+  '@ffprobe-installer/darwin-x64@5.0.0':
+    optional: true
+
+  '@ffprobe-installer/ffprobe@1.4.1':
+    optionalDependencies:
+      '@ffprobe-installer/darwin-arm64': 5.0.1
+      '@ffprobe-installer/darwin-x64': 5.0.0
+      '@ffprobe-installer/linux-arm': 5.0.0
+      '@ffprobe-installer/linux-arm64': 5.0.0
+      '@ffprobe-installer/linux-ia32': 5.0.0
+      '@ffprobe-installer/linux-x64': 5.0.0
+      '@ffprobe-installer/win32-ia32': 5.0.0
+      '@ffprobe-installer/win32-x64': 5.0.0
+
+  '@ffprobe-installer/linux-arm64@5.0.0':
+    optional: true
+
+  '@ffprobe-installer/linux-arm@5.0.0':
+    optional: true
+
+  '@ffprobe-installer/linux-ia32@5.0.0':
+    optional: true
+
+  '@ffprobe-installer/linux-x64@5.0.0':
+    optional: true
+
+  '@ffprobe-installer/win32-ia32@5.0.0':
+    optional: true
+
+  '@ffprobe-installer/win32-x64@5.0.0':
+    optional: true
 
   '@humanfs/core@0.19.1': {}
 
@@ -5694,6 +5796,8 @@ snapshots:
 
   date-fns@4.1.0: {}
 
+  dayjs@1.11.13: {}
+
   debug@4.4.0:
     dependencies:
       ms: 2.1.3
@@ -6193,6 +6297,12 @@ snapshots:
     dependencies:
       '@sec-ant/readable-stream': 0.4.1
       is-stream: 4.0.1
+
+  get-video-duration@4.1.0:
+    dependencies:
+      '@ffprobe-installer/ffprobe': 1.4.1
+      execa: 5.1.1
+      is-stream: 2.0.1
 
   glob-parent@5.1.2:
     dependencies:
@@ -6942,6 +7052,11 @@ snapshots:
   negotiator@1.0.0: {}
 
   neo-async@2.6.2: {}
+
+  nestjs-vnpay@1.0.1(@nestjs/common@11.1.0(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(vnpay@2.2.0):
+    dependencies:
+      '@nestjs/common': 11.1.0(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      vnpay: 2.2.0
 
   node-abort-controller@3.1.1: {}
 
@@ -7699,6 +7814,10 @@ snapshots:
   validator@13.15.0: {}
 
   vary@1.1.2: {}
+
+  vnpay@2.2.0:
+    dependencies:
+      dayjs: 1.11.13
 
   walker@1.0.8:
     dependencies:
