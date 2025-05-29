@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Res, StreamableFile, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Res, StreamableFile, Query, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { fileStorageConfig } from '../../config/file-storage.config';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 
 @Controller('products')
 export class ProductsController {
@@ -69,5 +71,10 @@ export class ProductsController {
     return new StreamableFile(stream);
   }
 
+ @Get('userid/product')
+   @UseGuards(JwtAuthGuard)
  
+ getUserProductByUserId(@CurrentUser() user: any) {
+   return this.productsService.getProductByUerid(user?.sub);
+ }
 }

@@ -13,9 +13,14 @@ export class JwtAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     
     // Lấy token từ Authorization header
-    const token = request.headers.authorization;
+    let token = request.headers.authorization;
     if (!token) {
       throw new UnauthorizedException('Access token not found');
+    }
+    
+    // Remove 'Bearer ' prefix if it exists
+    if (token.includes('Bearer')) {
+      token = token.split('Bearer ')[1];
     }
     
     try {

@@ -12,7 +12,7 @@ model users {
   email         String         @unique @db.VarChar(100)
   password      String?        @db.VarChar(255)
   fullname      String?        @db.VarChar(100)
-  phone         String?        @db.VarChar(20)
+  phone         String?        @unique(map: "unique_phone") @db.VarChar(10)
   createdat     DateTime?      @default(now()) @db.Timestamp(6)
   updatedat     DateTime?      @default(now()) @db.Timestamp(6)
   isdeleted     Boolean?       @default(false)
@@ -87,6 +87,11 @@ model userproducts {
   productid     String    @db.Uuid
   purchasedate  DateTime? @default(now()) @db.Timestamp(6)
   isdeleted     Boolean?  @default(false)
+  amount        String    @db.VarChar(10)
+  transactionid String?   @db.VarChar(6)
+  status        Boolean?
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  updated_at    DateTime  @default(now()) @db.Timestamp(6)
   products      products  @relation(fields: [productid], references: [productid], onDelete: Cascade, onUpdate: NoAction)
   users         users     @relation(fields: [userid], references: [userid], onDelete: Cascade, onUpdate: NoAction)
 

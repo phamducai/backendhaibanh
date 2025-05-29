@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { UserproductsService } from './userproducts.service';
-import { CreateUserProductDto } from './dto/create-userproduct.dto';
 import { UpdateUserproductDto } from './dto/update-userproduct.dto';
+import { CreateUserProductDto } from './dto/create-userproduct.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 
 @Controller('userproducts')
 export class UserproductsController {
-  constructor(private readonly userproductsService: UserproductsService) {}
+  constructor(  private readonly userproductsService: UserproductsService) {}
 
   @Post()
-  create(@Body() createUserProductDto: CreateUserProductDto) {
-    return this.userproductsService.create(createUserProductDto);
+  @UseGuards(JwtAuthGuard)
+  create(@CurrentUser() user: any, @Body() createUserProductDto: CreateUserProductDto) {
+    return this.userproductsService.create(createUserProductDto, user);
   }
 
   @Get()
@@ -20,6 +23,12 @@ export class UserproductsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userproductsService.findOne(id);
+  }
+
+  @Get('userid/id')
+  @UseGuards(JwtAuthGuard)
+  findUserProductByUserId(@CurrentUser() user: any,@Query('status') status: boolean) {
+    return this.userproductsService.findUserProductByUserId(user?.sub,status);
   }
 
   @Patch(':id')

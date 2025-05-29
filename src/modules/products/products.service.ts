@@ -135,4 +135,26 @@ export class ProductsService {
       },
     });
   }
+
+  async getProductByUerid(userid:string){
+    return this.prisma.products.findMany({
+      where: { isdeleted: false },
+      include: {
+        userproducts: {
+          where: { 
+            userid: userid, 
+            status:true,
+            isdeleted:false
+          },
+          select: {
+            productid: true,
+            status: true,
+            amount: true,
+            userid:true
+          }
+        }
+      }
+    });
+  }
+
 }

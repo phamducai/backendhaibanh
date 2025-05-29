@@ -1,11 +1,6 @@
-import { IsString, IsUUID, IsOptional, IsBoolean } from 'class-validator';
+import { IsUUID, IsOptional, IsBoolean, IsString } from 'class-validator';
 
 export class CreateUserProductDto {
-  @IsUUID()
-  userproductid: string;
-
-  @IsUUID()
-  userid: string;
 
   @IsUUID()
   productid: string;
@@ -13,4 +8,14 @@ export class CreateUserProductDto {
   @IsBoolean()
   @IsOptional()
   isdeleted?: boolean;
+
+  @IsBoolean()
+  status: boolean;
+  
+  @IsString()
+  amount: string;
+    
+  @IsString()
+  @IsOptional()
+  transactionid?: string;
 }

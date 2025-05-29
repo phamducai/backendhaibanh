@@ -7,7 +7,6 @@ import { ProductsModule } from './modules/products/products.module';
 import { ChaptersModule } from './modules/chapters/chapters.module';
 import { LessonsModule } from './modules/lessons/lessons.module';
 import { UserproductsModule } from './modules/userproducts/userproducts.module';
-import { VnpayModule } from './modules/vnpay/vnpay.module';
 
 @Module({
   imports: [
@@ -18,9 +17,8 @@ import { VnpayModule } from './modules/vnpay/vnpay.module';
     ConfigModule.forRoot({isGlobal:true}),
     ChaptersModule,
     LessonsModule,
-    UserproductsModule,
-    VnpayModule
-  ],
+    UserproductsModule
+    ],
   controllers: [],
   providers: [],
 })

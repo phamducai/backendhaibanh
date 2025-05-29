@@ -1,20 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserProductDto } from './dto/create-userproduct.dto';
 import { UpdateUserproductDto } from './dto/update-userproduct.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from '../../database/prisma.service'
+import { CreateUserProductDto } from './dto/create-userproduct.dto';
 
 
 @Injectable()
 export class UserproductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createUserProductDto: CreateUserProductDto) {
-    return this.prisma.userproducts.create({
-      data: {
-        ...createUserProductDto,
-        userproductid: uuidv4(),
+  async create(createUserProductDto: CreateUserProductDto, user?: any) {
+    const createData: any = {
+      userproductid: uuidv4(),
+      userid: user?.sub,
+      productid: createUserProductDto.productid,
+      status: createUserProductDto.status,
+      amount: createUserProductDto.amount,
+      isdeleted: createUserProductDto.isdeleted || false,
+    };
+    
+    // Only add transactionid if it's provided and not undefined
+    if (createUserProductDto.transactionid) {
+      createData.transactionid = createUserProductDto.transactionid;
+    }
+    
+    // Create a clean object for update operation
+    const updateData: any = {
+      amount: createUserProductDto.amount,
+      status: createUserProductDto.status,
+      isdeleted: createUserProductDto.isdeleted || false,
+    };
+    
+    // Only add transactionid to update if it's provided
+    if (createUserProductDto.transactionid) {
+      updateData.transactionid = createUserProductDto.transactionid;
+    }
+    
+    return this.prisma.userproducts.upsert({
+      where: {
+        userid_productid: {
+          userid: user?.sub,
+          productid: createUserProductDto.productid
+        }
       },
+      update: updateData,
+      create: createData,
     });
   }
 
@@ -38,6 +68,19 @@ export class UserproductsService {
   remove(id: string) {
     return this.prisma.userproducts.delete({
       where: { userproductid: id },
+    });
+  }
+
+  findUserProductByUserId(id: string, status?: boolean) {
+    return this.prisma.userproducts.findMany({
+      where: { userid: id, status: status, isdeleted: false },
+      include: {
+        products: {
+          select: {
+            productname: true
+          }
+        }
+      }
     });
   }
 }
