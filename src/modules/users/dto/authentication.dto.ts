@@ -11,6 +11,10 @@ export class AuthenticationDto {
 
   @IsOptional()
   @IsString()
-  fullname?:string;
+  fullname:string;
+
+  @IsOptional()
+  @IsString()
+  phone:string;
 
 }

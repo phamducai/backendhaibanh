@@ -71,15 +71,28 @@ export class UserproductsService {
     });
   }
 
-  findUserProductByUserId(id: string, status?: boolean) {
-    return this.prisma.userproducts.findMany({
-      where: { userid: id, status: status, isdeleted: false },
-      include: {
+  findUserProductByUserId(id: string, status?: boolean,iscourse?:boolean) {
+    return this. prisma.userproducts.findMany({
+      where: {
+        userid: id,
+        status: status,
+        isdeleted: false,
         products: {
-          select: {
-            productname: true
-          }
+          iscourse: iscourse
         }
+      },
+      select: {
+        userproductid: true,
+        userid: true,
+        productid: true,
+        purchasedate: true,
+        isdeleted: true,
+        amount: true,
+        transactionid: true,
+        status: true,
+        created_at: true,
+        updated_at: true,
+        products: true
       }
     });
   }

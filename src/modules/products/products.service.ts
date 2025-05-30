@@ -137,24 +137,22 @@ export class ProductsService {
   }
 
   async getProductByUerid(userid:string){
-    return this.prisma.products.findMany({
-      where: { isdeleted: false },
-      include: {
-        userproducts: {
-          where: { 
-            userid: userid, 
-            status:true,
-            isdeleted:false
-          },
-          select: {
-            productid: true,
-            status: true,
-            amount: true,
-            userid:true
-          }
+    const products = await this.prisma.products.findMany({
+      where: {
+        isdeleted: false,
+        productid: {
+          notIn: await this.prisma.userproducts.findMany({
+            where: {
+              userid: userid,
+              status: true,
+            },
+            select: {
+              productid: true,
+            },
+          }).then(results => results.map(r => r.productid))
         }
       }
     });
+    return products;
   }
-
 }

@@ -71,7 +71,7 @@ export class ProductsController {
     return new StreamableFile(stream);
   }
 
- @Get('userid/product')
+ @Get('userid/home')
    @UseGuards(JwtAuthGuard)
  
  getUserProductByUserId(@CurrentUser() user: any) {

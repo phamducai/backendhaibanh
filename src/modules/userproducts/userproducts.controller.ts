@@ -27,8 +27,8 @@ export class UserproductsController {
 
   @Get('userid/id')
   @UseGuards(JwtAuthGuard)
-  findUserProductByUserId(@CurrentUser() user: any,@Query('status') status: boolean) {
-    return this.userproductsService.findUserProductByUserId(user?.sub,status);
+  findUserProductByUserId(@CurrentUser() user: any,@Query('status') status: boolean,@Query('iscourse') iscourse: boolean) {
+    return this.userproductsService.findUserProductByUserId(user?.sub,status,iscourse);
   }
 
   @Patch(':id')

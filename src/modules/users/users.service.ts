@@ -26,6 +26,12 @@ export class UsersService {
     });
   }
 
+  async findByPhone(phone: string) {
+    return this.prisma.users.findUnique({
+      where: { phone },
+    });
+  } 
+
   async findByGoogleId(googleId: string) {
     return this.prisma.users.findUnique({
       where: { googleid: googleId },
@@ -74,7 +80,11 @@ export class UsersService {
     if (existingUser) {
       throw new ConflictException('Email already exists');
     }
-
+   
+    const existingPhone= await this.findByPhone(registerDto.phone);
+    if(existingPhone){
+      throw new ConflictException('Phone number already exists');
+    }
     // Mã hóa mật khẩu
     const hashedPassword = await argon2.hash(registerDto.password);
 
@@ -84,7 +94,8 @@ export class UsersService {
         userid: uuidv4(),
         email: registerDto.email,
         password: hashedPassword, 
-        fullname:registerDto.fullname
+        fullname:registerDto.fullname,
+        phone:registerDto.phone
       }
     });
   }
