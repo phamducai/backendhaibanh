@@ -8,23 +8,22 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT', 3000)
-  
+  const port = configService.get<number>('PORT', 3000);
+
   app.setGlobalPrefix('api/v1');
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:8080'],
     credentials: true, // Cho phép chia sẻ cookie giữa các domain
   });
-  
+
   // Cookie parser middleware
   // app.use(cookieParser());
-  
+
   // Global filters for centralized error handling
   // app.useGlobalFilters(
   //   new HttpExceptionFilter(),
   //   new PrismaExceptionFilter()
   // );
-  
+
   // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
@@ -33,7 +32,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  
+
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}/api`);
 }

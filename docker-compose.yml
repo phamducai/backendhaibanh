@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   postgres:
     image: postgres:17
@@ -10,10 +9,31 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: course_platform
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
-
+    networks:
+      - app-network
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: course_platform_backend
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://admin:admin@postgres:5432/course_platform
+      - NODE_ENV=production
+      - JWT_SECRET=helloword
+      - JWT_EXPIRES_IN=1d
+      - JWT_REFRESH_EXPIRES_IN=7d
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
 volumes:
   postgres_data:

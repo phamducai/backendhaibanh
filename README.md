@@ -29,6 +29,7 @@
 
 ```bash
 $ pnpm install
+$ docker-compose up --build
 ```
 
 ## Compile and run the project
