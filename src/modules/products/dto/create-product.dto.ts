@@ -1,8 +1,14 @@
-import { IsString, IsBoolean, IsOptional, IsNumber, IsNotEmpty, Min } from 'class-validator';
+import {
+  IsString,
+  IsBoolean,
+  IsOptional,
+  IsNumber,
+  IsNotEmpty,
+  Min,
+} from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 
 export class CreateProductDto {
-
   @IsString()
   @IsNotEmpty()
   productname: string;
@@ -54,4 +60,8 @@ export class CreateProductDto {
     return value;
   })
   isdeleted?: boolean;
+
+  @IsString()
+  @IsOptional()
+  textfunction?: string;
 }

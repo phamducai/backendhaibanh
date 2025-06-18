@@ -26,6 +26,8 @@ services:
       - JWT_SECRET=helloword
       - JWT_EXPIRES_IN=1d
       - JWT_REFRESH_EXPIRES_IN=7d
+      - EMAIL_USER=haismartlife@gmail.com
+      - EMAIL_PASSWORD=vjeg uksb xusq avhj
     ports:
       - '3000:3000'
     depends_on:
