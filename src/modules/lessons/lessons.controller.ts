@@ -69,6 +69,13 @@ export class LessonsController {
         }
       });
       
+      // Handle client disconnect
+      res.on('close', () => {
+        if (!fileStream.destroyed) {
+          fileStream.destroy();
+        }
+      });
+      
       // Pipe stream tới response
       return fileStream.pipe(res);
     } catch (err) {
@@ -188,6 +195,14 @@ export class LessonsController {
         
         const file = createReadStream(videoPath, { start, end, highWaterMark: 64 * 1024 }); // 64KB buffer
         this.setupStreamEventHandlers(file);
+        
+        // Handle client disconnect for range requests
+        res.req.on('close', () => {
+          if (!file.destroyed) {
+            file.destroy();
+          }
+        });
+        
         return new StreamableFile(file);
       } else {
         // Full content response
@@ -199,6 +214,14 @@ export class LessonsController {
         console.log(`Streaming full video: ${safeFilename} (${Math.round(fileSize/1024/1024 * 100) / 100}MB)`);
         const file = createReadStream(videoPath, { highWaterMark: 64 * 1024 }); // 64KB buffer
         this.setupStreamEventHandlers(file);
+        
+        // Handle client disconnect for full video requests
+        res.req.on('close', () => {
+          if (!file.destroyed) {
+            file.destroy();
+          }
+        });
+        
         return new StreamableFile(file);
       }
     } catch (err) {
@@ -211,13 +234,21 @@ export class LessonsController {
   private setupStreamEventHandlers(stream: fs.ReadStream): void {
     // Handle common stream errors
     stream.on('error', (err: NodeJS.ErrnoException) => {
-      if (err.code === 'ECONNRESET' || err.code === 'ERR_STREAM_PREMATURE_CLOSE') {
+      if (err.code === 'ECONNRESET' || 
+          err.code === 'ERR_STREAM_PREMATURE_CLOSE' ||
+          err.code === 'EPIPE' ||
+          err.code === 'ECONNABORTED') {
         // These errors are normal when clients seek the video or close the browser
         // Just log at debug level not to flood the logs
-        console.log('Client disconnected, stream closed');
+        console.log(`Client disconnected: ${err.code}`);
       } else {
         console.error(`Stream error: ${err.message}`);
       }
+    });
+    
+    // Handle close event
+    stream.on('close', () => {
+      console.log('Stream closed');
     });
     
     // Only add these in development environment or when debugging is needed
@@ -228,6 +259,14 @@ export class LessonsController {
     
     // Ensure stream is destroyed on end to prevent memory leaks
     stream.on('end', () => {
+      if (!stream.destroyed) {
+        stream.destroy();
+      }
+    });
+    
+    // Handle aborted requests
+    stream.on('aborted', () => {
+      console.log('Stream aborted by client');
       if (!stream.destroyed) {
         stream.destroy();
       }

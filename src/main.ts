@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter, PrismaExceptionFilter } from './common/filters';
+import { HttpExceptionFilter, PrismaExceptionFilter, StreamingExceptionFilter } from './common/filters';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
@@ -19,10 +19,11 @@ async function bootstrap() {
   // app.use(cookieParser());
 
   // Global filters for centralized error handling
-  // app.useGlobalFilters(
-  //   new HttpExceptionFilter(),
-  //   new PrismaExceptionFilter()
-  // );
+  app.useGlobalFilters(
+    new HttpExceptionFilter(),
+    new PrismaExceptionFilter(),
+    new StreamingExceptionFilter()
+  );
 
   // Global validation pipe
   app.useGlobalPipes(

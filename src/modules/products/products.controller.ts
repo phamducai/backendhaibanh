@@ -1,4 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Res, StreamableFile, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  Res,
+  StreamableFile,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { fileStorageConfig } from '../../config/file-storage.config';
@@ -71,10 +85,10 @@ export class ProductsController {
     return new StreamableFile(stream);
   }
 
- @Get('userid/home')
-   @UseGuards(JwtAuthGuard)
- 
- getUserProductByUserId(@CurrentUser() user: any) {
-   return this.productsService.getProductByUerid(user?.sub);
- }
+  @Get('userid/home')
+  @UseGuards(JwtAuthGuard)
+  getUserProductByUserId(@CurrentUser() user: any) {
+    console.log(user?.sub);
+    return this.productsService.getProductByUerid(user?.sub);
+  }
 }
