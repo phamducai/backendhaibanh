@@ -17,6 +17,7 @@ export class AuthController {
   async googleAuth(@Body() userData: CreateUserDto, @Res({ passthrough: true }) response: Response) {
     // Tìm hoặc tạo user từ Google data
     const user = await this.usersService.findOrCreateByGoogle(userData);
+    console.log(user,"dmm");
     
     // Tạo JWT token
     const tokens = this.authService.generateToken(user.userid);

@@ -13,8 +13,8 @@ export class CreateUserDto {
   @IsString()
   avatarUrl?: string;
 
-  // @IsNotEmpty()
-  // @IsString()
-  // fullname:string;
+  @IsNotEmpty()
+  @IsString()
+  fullname:string;
 
 }

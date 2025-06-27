@@ -96,4 +96,15 @@ export class UserproductsService {
       }
     });
   }
+
+  // Cách 1: Sử dụng raw query (khuyến nghị vì amount là string)
+  async getTotalAmountByStatus() {
+    console.log("getTotalAmountByStatus");
+    const result = await this.prisma.$queryRaw<Array<{ total: number | null }>>`
+      SELECT SUM(CAST(amount AS INT)) as total 
+      FROM userproducts 
+      WHERE status = true
+    `;
+    return result[0]?.total || 0;
+  }
 }

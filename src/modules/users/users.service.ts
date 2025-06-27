@@ -27,7 +27,8 @@ export class UsersService {
   }
 
   async findByPhone(phone: string) {
-    return this.prisma.users.findUnique({
+    
+    return this.prisma.users.findFirst({
       where: { phone },
     });
   } 
@@ -59,6 +60,7 @@ export class UsersService {
         data: {
           googleid: userData.googleId,
           avatar: userData.avatarUrl,
+          fullname:userData.fullname
         }
       });
     }
@@ -71,6 +73,7 @@ export class UsersService {
         avatar: userData.avatarUrl,
         isgooglelogin:true,
         userid: uuidv4(),
+        fullname:userData.fullname
       }
     });
   }
@@ -120,5 +123,9 @@ export class UsersService {
     });
 
     return user;
+  }
+
+  async count() {
+    return this.prisma.users.count();
   }
 }

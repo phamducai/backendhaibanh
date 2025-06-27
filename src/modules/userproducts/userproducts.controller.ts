@@ -40,4 +40,9 @@ export class UserproductsController {
   remove(@Param('id') id: string) {
     return this.userproductsService.remove(id);
   }
+  @Get('totalamount/admin')
+  totalamount() {
+    return this.userproductsService.getTotalAmountByStatus();
+  }
+
 }
